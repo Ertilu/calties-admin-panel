@@ -1,4 +1,5 @@
 import React from 'react'
+import { lazyRetry } from './shared/utils/lazy-retry'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -26,7 +27,12 @@ const ButtonGroups = React.lazy(() => import('./views/buttons/button-groups/Butt
 const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns'))
 
 //Forms
-const Forms = React.lazy(() => import('./views/dashboard/forms'))
+const Forms = React.lazy(() =>
+  lazyRetry(
+    () => import(/* webpackChunkName: "userSettings" */ './views/dashboard/forms'),
+    'add-edit-form',
+  ),
+)
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
 const FloatingLabels = React.lazy(() => import('./views/forms/floating-labels/FloatingLabels'))
 const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'))
