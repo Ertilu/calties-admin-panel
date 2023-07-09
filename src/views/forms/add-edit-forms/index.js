@@ -69,6 +69,8 @@ const PageForms = () => {
     [data],
   )
 
+  const renderAsterisk = () => <span style={{ color: 'red' }}>*</span>
+
   return (
     <div
       className="bg-light d-flex flex-row align-items-center"
@@ -81,7 +83,7 @@ const PageForms = () => {
           </CCardHeader>
           <CCardBody>
             <CForm>
-              <CFormLabel htmlFor="input-name-label">Nama Barang</CFormLabel>
+              <CFormLabel htmlFor="input-name-label">Nama Barang {renderAsterisk()}</CFormLabel>
               <CFormInput
                 type="text"
                 id="input-name"
@@ -91,7 +93,7 @@ const PageForms = () => {
               />
 
               <CFormLabel htmlFor="input-vendor-label" style={{ marginTop: spacing[16] }}>
-                Vendor
+                Vendor {renderAsterisk()}
               </CFormLabel>
               <CFormInput
                 type="text"
@@ -102,7 +104,7 @@ const PageForms = () => {
               />
 
               <CFormLabel htmlFor="input-harga-label" style={{ marginTop: spacing[16] }}>
-                Harga
+                Harga {renderAsterisk()}
               </CFormLabel>
               <CInputGroup>
                 <CInputGroupText>Rp</CInputGroupText>
@@ -117,7 +119,7 @@ const PageForms = () => {
               </CInputGroup>
 
               <CFormLabel htmlFor="input-in-label" style={{ marginTop: spacing[16] }}>
-                In
+                In {renderAsterisk()}
               </CFormLabel>
               <CFormInput
                 type="number"
@@ -128,7 +130,7 @@ const PageForms = () => {
               />
 
               <CFormLabel htmlFor="input-out-label" style={{ marginTop: spacing[16] }}>
-                Out
+                Out {renderAsterisk()}
               </CFormLabel>
               <CFormInput
                 type="number"
