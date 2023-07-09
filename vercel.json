@@ -3,5 +3,9 @@
     { "src": "/", "dest": "/" },
     { "src": "/dashboard", "dest": "/" },
     { "src": "/dashboard/forms", "dest": "/" }
+  ],
+  "rewrites":  [
+    {"source": "/(.*)", "destination": "/"},
+    {"source": "/(.*)/(.*)", "destination": "/"}
   ]
 }
