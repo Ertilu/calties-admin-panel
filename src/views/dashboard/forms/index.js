@@ -24,9 +24,11 @@ const PageForms = () => {
   const formMode = useSelector((state) => state.formMode)
   const dispatch = useDispatch()
   const [data, setData] = useState(inventoryData)
+  const [loading, setLoading] = useState(false)
 
   const _submit = useCallback(async () => {
     let result
+    setLoading(true)
     if (formMode === 'add') {
       result = await inventoryService.create({
         ...data,
@@ -48,6 +50,7 @@ const PageForms = () => {
     if (result?.id) {
       navigate(-1)
     }
+    setLoading(false)
     dispatch({ type: RESET_INVENTORY_FORM })
   }, [data, navigate, formMode, dispatch])
 
@@ -65,8 +68,13 @@ const PageForms = () => {
 
   const isButtonDisabled = useMemo(
     () =>
-      data?.name === '' || data?.vendor === '' || data?.price < 1 || data?.in < 1 || data?.out < 1,
-    [data],
+      data?.name === '' ||
+      data?.vendor === '' ||
+      data?.price < 1 ||
+      data?.in < 1 ||
+      data?.out < 1 ||
+      loading,
+    [data, loading],
   )
 
   const renderAsterisk = () => <span style={{ color: 'red' }}>*</span>
