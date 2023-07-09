@@ -26,13 +26,13 @@ const AppSidebar = () => {
       unfoldable={unfoldable}
       visible={sidebarShow}
       onVisibleChange={(visible) => {
-        dispatch({ type: 'set', sidebarShow: visible })
+        // dispatch({ type: 'set', sidebarShow: visible })
       }}
       className="app-sidebar"
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <h5 className="sidebar-brand-full">Central Laundry</h5>
-        <h5 className="sidebar-brand-narrow">Central Laundry</h5>
+        <h5 className="sidebar-brand-full">Calties</h5>
+        <h5 className="sidebar-brand-narrow">Calties</h5>
         {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
       </CSidebarBrand>
