@@ -43,7 +43,7 @@ const Dashboard = (props) => {
   useEffect(() => {
     getData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [debouncedValue])
 
   const getData = useCallback(() => {
     InventoryService.getAllData({ search: debouncedValue })
