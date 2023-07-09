@@ -28,6 +28,7 @@ import { spacing } from 'src/shared/style.const'
 import { formatRupiah } from 'src/shared/utils/formatter'
 import { useDebounce } from 'src/shared/utils/debounce'
 import InventoryService from 'src/services/inventory.service'
+import './Dashboard.scss'
 
 const Dashboard = (props) => {
   const dispatch = useDispatch()
@@ -141,16 +142,7 @@ const Dashboard = (props) => {
                     <CTableDataCell align="middle">
                       <CDropdown>
                         <CDropdownToggle color="transparent"></CDropdownToggle>
-                        <CDropdownMenu
-                          style={{
-                            position: 'absolute',
-                            backgroundColor: 'red',
-                            width: 'auto',
-                            height: 'auto',
-                            top: -20,
-                            left: -40,
-                          }}
-                        >
+                        <CDropdownMenu className="dropdown-container">
                           <CDropdownItem href="#" onClick={() => onEdit(d?.id)}>
                             Edit
                           </CDropdownItem>
