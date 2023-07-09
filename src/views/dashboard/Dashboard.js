@@ -65,7 +65,7 @@ const Dashboard = (props) => {
       if (res?.id) {
         setLoading(false)
         dispatch({ type: 'edit_inventory', inventoryData: res })
-        navigate('/forms')
+        navigate('/dashboard/forms')
       }
     },
     [dispatch, setLoading, navigate],
@@ -108,7 +108,7 @@ const Dashboard = (props) => {
             <CButton
               color="primary"
               style={{ margin: `${spacing[8]} 0` }}
-              onClick={() => navigate('/forms')}
+              onClick={() => navigate('/dashboard/forms')}
             >
               Tambah Data
             </CButton>
