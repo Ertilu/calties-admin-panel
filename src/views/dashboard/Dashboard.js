@@ -142,7 +142,13 @@ const Dashboard = (props) => {
                       <CDropdown>
                         <CDropdownToggle color="transparent"></CDropdownToggle>
                         <CDropdownMenu
-                          style={{ position: 'absolute', width: 'auto', height: 'auto' }}
+                          style={{
+                            position: 'absolute',
+                            width: 'auto',
+                            height: 'auto',
+                            top: -20,
+                            left: -40,
+                          }}
                         >
                           <CDropdownItem href="#" onClick={() => onEdit(d?.id)}>
                             Edit
