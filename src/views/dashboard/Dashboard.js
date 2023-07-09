@@ -144,6 +144,7 @@ const Dashboard = (props) => {
                         <CDropdownMenu
                           style={{
                             position: 'absolute',
+                            backgroundColor: 'red',
                             width: 'auto',
                             height: 'auto',
                             top: -20,
