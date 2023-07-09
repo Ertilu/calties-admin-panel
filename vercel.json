@@ -5,6 +5,7 @@
     { "src": "/dashboard/forms", "dest": "/" }
   ],
   "rewrites":  [
-    {"source": "/(.*)", "destination": "/"}
+    {"source": "/(.*)", "destination": "/"},
+    {"source": "/(.*)/(.*)", "destination": "/"}
   ]
 }
