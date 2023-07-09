@@ -17,6 +17,7 @@ import './index.scss'
 import inventoryService from 'src/services/inventory.service'
 import { useDispatch, useSelector } from 'react-redux'
 import { RESET_INVENTORY_FORM } from 'src/actionType'
+import Loading from 'src/components/Loading'
 
 const PageForms = () => {
   const navigate = useNavigate()
@@ -84,6 +85,7 @@ const PageForms = () => {
       className="bg-light d-flex flex-row align-items-center"
       style={{ marginBottom: spacing[32] }}
     >
+      <Loading visible={loading} />
       <CContainer>
         <CCard>
           <CCardHeader>
