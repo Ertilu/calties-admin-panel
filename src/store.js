@@ -6,10 +6,7 @@ const initialState = {
   formMode: 'add',
   inventoryData: {
     name: '',
-    vendor: '',
     price: '',
-    in: '',
-    out: '',
   },
 }
 

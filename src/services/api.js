@@ -1,5 +1,6 @@
 import axios from 'axios'
 import TokenService from './token.service'
+import AuthService from './auth.service'
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_HOST,
@@ -27,13 +28,21 @@ instance.interceptors.response.use(
     return res
   },
   async (err) => {
+    const counter = localStorage.getItem('counter-refresh')
     const originalConfig = err.config
+
+    if (parseInt(counter, 10) > 10) {
+      localStorage.setItem('counter-refresh', 0)
+      AuthService.logout()
+      window.location.reload()
+    }
 
     if (originalConfig.url !== '/v1/auth/login' && err.response) {
       // Access Token was expired
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true
 
+        localStorage.setItem('counter-refresh', (parseInt(counter || 0, 10) || 0) + 1)
         try {
           const rs = await instance.post('/v1/auth/refresh-tokens', {
             refreshToken: TokenService.getLocalRefreshToken(),

@@ -34,15 +34,11 @@ const PageForms = () => {
       result = await inventoryService.create({
         ...data,
         price: parseInt(data.price, 10),
-        in: parseInt(data.in, 10),
-        out: parseInt(data.out, 10),
       })
     } else if (formMode === 'edit') {
       const payloadEdit = {
         ...data,
         price: parseInt(data.price, 10),
-        in: parseInt(data.in, 10),
-        out: parseInt(data.out, 10),
       }
       delete payloadEdit?.id
       delete payloadEdit?.remaining
@@ -68,13 +64,7 @@ const PageForms = () => {
   }, [navigate, dispatch])
 
   const isButtonDisabled = useMemo(
-    () =>
-      data?.name === '' ||
-      data?.vendor === '' ||
-      data?.price < 1 ||
-      data?.in < 1 ||
-      data?.out < 1 ||
-      loading,
+    () => data?.name === '' || data?.price < 1 || loading,
     [data, loading],
   )
 
@@ -102,17 +92,6 @@ const PageForms = () => {
                 value={data.name}
               />
 
-              <CFormLabel htmlFor="input-vendor-label" style={{ marginTop: spacing[16] }}>
-                Vendor {renderAsterisk()}
-              </CFormLabel>
-              <CFormInput
-                type="text"
-                id="input-vendor"
-                placeholder="Masukkan Vendor"
-                onChange={(e) => onChangeText(e, 'vendor')}
-                value={data.vendor}
-              />
-
               <CFormLabel htmlFor="input-harga-label" style={{ marginTop: spacing[16] }}>
                 Harga {renderAsterisk()}
               </CFormLabel>
@@ -127,28 +106,6 @@ const PageForms = () => {
                   value={data.price}
                 />
               </CInputGroup>
-
-              <CFormLabel htmlFor="input-in-label" style={{ marginTop: spacing[16] }}>
-                In {renderAsterisk()}
-              </CFormLabel>
-              <CFormInput
-                type="number"
-                id="input-in"
-                placeholder="Masukkan Stok Masuk"
-                onChange={(e) => onChangeText(e, 'in')}
-                value={data.in}
-              />
-
-              <CFormLabel htmlFor="input-out-label" style={{ marginTop: spacing[16] }}>
-                Out {renderAsterisk()}
-              </CFormLabel>
-              <CFormInput
-                type="number"
-                id="input-out"
-                placeholder="Masukkan Stok Keluar"
-                onChange={(e) => onChangeText(e, 'out')}
-                value={data.out}
-              />
             </CForm>
 
             <div className="d-flex justify-content-end" style={{ marginTop: spacing[24] }}>

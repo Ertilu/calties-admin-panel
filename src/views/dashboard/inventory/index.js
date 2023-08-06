@@ -23,12 +23,13 @@ import CIcon from '@coreui/icons-react'
 import { cilSearch } from '@coreui/icons'
 import { useDispatch } from 'react-redux'
 import Loading from 'src/components/Loading'
-import ModalConfirmation from '../../components/ModalConfirmation'
+import ModalConfirmation from '../../../components/ModalConfirmation'
 import { spacing } from 'src/shared/style.const'
 import { formatRupiah } from 'src/shared/utils/formatter'
 import { useDebounce } from 'src/shared/utils/debounce'
 import InventoryService from 'src/services/inventory.service'
-import './Dashboard.scss'
+import './index.scss'
+import ModalDetail from './detail'
 
 const Dashboard = (props) => {
   const dispatch = useDispatch()
@@ -39,6 +40,9 @@ const Dashboard = (props) => {
   const [loading, setLoading] = useState(true)
   const [modalConfirmDelete, setModalConfirmDelete] = useState(false)
   const [idToDelete, setIdToDelete] = useState('')
+  const [modalDetail, setModalDetail] = useState(false)
+  const [dataInStock, setDataInStock] = useState([])
+  const [dataOutStock, setDataOutStock] = useState([])
 
   useEffect(() => {
     getData()
@@ -64,7 +68,14 @@ const Dashboard = (props) => {
       const res = await InventoryService.getDetail(id)
       if (res?.id) {
         setLoading(false)
-        dispatch({ type: 'edit_inventory', inventoryData: res })
+        dispatch({
+          type: 'edit_inventory',
+          inventoryData: {
+            id: res?.id,
+            name: res?.name,
+            price: res?.price,
+          },
+        })
         navigate('/dashboard/forms')
       }
     },
@@ -78,6 +89,31 @@ const Dashboard = (props) => {
     getData()
   }, [idToDelete, getData])
 
+  const openModalDetail = useCallback((currentData) => {
+    setModalDetail(true)
+
+    setDataInStock(
+      currentData?.inStocks?.map((inStock) => ({
+        ...inStock,
+        inventory: currentData,
+      })),
+    )
+
+    setDataOutStock(
+      currentData?.outStocks?.map((outStock) => ({
+        ...outStock,
+        inventory: currentData,
+      })),
+    )
+  }, [])
+
+  const closeModalDetail = () => {
+    setModalDetail(false)
+
+    setDataInStock([])
+    setDataOutStock([])
+  }
+
   return (
     <>
       <CCard>
@@ -86,6 +122,12 @@ const Dashboard = (props) => {
           visible={modalConfirmDelete}
           onClose={() => setModalConfirmDelete(false)}
           onOk={onDelete}
+        />
+        <ModalDetail
+          visible={modalDetail}
+          onClose={closeModalDetail}
+          dataInStock={dataInStock}
+          dataOutStock={dataOutStock}
         />
         <CCardHeader>
           <div>
@@ -119,11 +161,10 @@ const Dashboard = (props) => {
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">Nama Barang</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Vendor</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Harga</CTableHeaderCell>
                 <CTableHeaderCell scope="col">In</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Out</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Sisa</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Sisa Stok</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -131,14 +172,42 @@ const Dashboard = (props) => {
               {data?.map((d, idx) => {
                 return (
                   <CTableRow key={idx.toString()}>
-                    <CTableDataCell scope="row" align="middle">
+                    <CTableDataCell
+                      scope="row"
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       {d?.name || '-'}
                     </CTableDataCell>
-                    <CTableDataCell align="middle">{d?.vendor || '-'}</CTableDataCell>
-                    <CTableDataCell align="middle">{formatRupiah(d?.price || 0)}</CTableDataCell>
-                    <CTableDataCell align="middle">{d?.in || 0}</CTableDataCell>
-                    <CTableDataCell align="middle">{d?.out || 0}</CTableDataCell>
-                    <CTableDataCell align="middle">{d?.remaining || 0}</CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {formatRupiah(d?.price || 0)}
+                    </CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {d?.in || 0}
+                    </CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {d?.out || 0}
+                    </CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {d?.remaining || 0}
+                    </CTableDataCell>
                     <CTableDataCell align="middle">
                       <CDropdown>
                         <CDropdownToggle color="transparent"></CDropdownToggle>

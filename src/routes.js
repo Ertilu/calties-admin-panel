@@ -1,7 +1,11 @@
 import React from 'react'
 import { lazyRetry } from './shared/utils/lazy-retry'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Dashboard = React.lazy(() => import('./views/dashboard/inventory'))
+const InStock = React.lazy(() => import('./views/dashboard/in-stock'))
+const InStockForm = React.lazy(() => import('./views/dashboard/in-stock/forms'))
+const OutStock = React.lazy(() => import('./views/dashboard/out-stock'))
+const OutStockForm = React.lazy(() => import('./views/dashboard/out-stock/forms'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -29,7 +33,7 @@ const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns')
 //Forms
 const Forms = React.lazy(() =>
   lazyRetry(
-    () => import(/* webpackChunkName: "userSettings" */ './views/dashboard/forms'),
+    () => import(/* webpackChunkName: "userSettings" */ './views/dashboard/inventory/forms'),
     'add-edit-form',
   ),
 )
@@ -59,7 +63,21 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard/inventory', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard/in-stock', name: 'Barang Masuk', element: InStock },
+  { path: '/dashboard/out-stock', name: 'Barang Keluar', element: OutStock },
+  {
+    path: '/dashboard/form-in-stock',
+    name: 'Tambah Stok Masuk',
+    element: InStockForm,
+    exact: true,
+  },
+  {
+    path: '/dashboard/form-out-stock',
+    name: 'Tambah Stok Keluar',
+    element: OutStockForm,
+    exact: true,
+  },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
