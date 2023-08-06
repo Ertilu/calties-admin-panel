@@ -232,6 +232,18 @@ const Dashboard = (props) => {
               })}
             </CTableBody>
           </CTable>
+          {data && !data?.length && (
+            <div
+              style={{
+                textAlign: 'center',
+                position: 'relative',
+                width: '100px',
+                margin: '0 auto',
+              }}
+            >
+              Data Kosong
+            </div>
+          )}
         </CCardBody>
       </CCard>
     </>
