@@ -128,13 +128,13 @@ const InStockForms = () => {
               </CInputGroup>
 
               <CFormLabel htmlFor="input-harga-label" style={{ marginTop: spacing[16] }}>
-                Vendor {renderAsterisk()}
+                Supplier {renderAsterisk()}
               </CFormLabel>
               <CInputGroup>
                 <CFormInput
                   type="text"
                   id="input-vendor"
-                  placeholder="Masukkan Vendor"
+                  placeholder="Masukkan Supplier"
                   min={1}
                   onChange={(e) => onChangeText(e, 'vendor')}
                   value={data.vendor}

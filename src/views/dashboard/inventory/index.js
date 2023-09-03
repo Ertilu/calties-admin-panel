@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+/* eslint-disable react/prop-types */
+/* eslint-disable react/display-name */
+import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import {
   CTable,
   CTableRow,
@@ -30,6 +32,17 @@ import { useDebounce } from 'src/shared/utils/debounce'
 import InventoryService from 'src/services/inventory.service'
 import './index.scss'
 import ModalDetail from './detail'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import moment from 'moment'
+
+const CustomDatePickerButton = forwardRef(({ value, onClick }, ref) => {
+  return (
+    <CButton color="primary" style={{ margin: `${spacing[8]} 0` }} onClick={onClick} ref={ref}>
+      {moment(value).format('MMMM YYYY')}
+    </CButton>
+  )
+})
 
 const Dashboard = (props) => {
   const dispatch = useDispatch()
@@ -43,20 +56,27 @@ const Dashboard = (props) => {
   const [modalDetail, setModalDetail] = useState(false)
   const [dataInStock, setDataInStock] = useState([])
   const [dataOutStock, setDataOutStock] = useState([])
+  const [filter, setFilter] = useState({
+    filterDate: new Date(),
+  })
 
   useEffect(() => {
     getData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue])
+  }, [debouncedValue, filter])
 
   const getData = useCallback(() => {
-    InventoryService.getAllData({ search: debouncedValue })
+    InventoryService.getAllData({
+      search: debouncedValue,
+      filterStockYear: filter.filterDate.getFullYear(),
+      filterStockMonth: filter.filterDate.getMonth(),
+    })
       .then((res) => {
         setLoading(false)
         setData(res?.results)
       })
       .catch(() => setLoading(false))
-  }, [debouncedValue])
+  }, [debouncedValue, filter])
 
   const onSearch = useCallback(({ target: { value } }) => {
     setSearch(value)
@@ -147,13 +167,26 @@ const Dashboard = (props) => {
                 </CInputGroupText>
               </CInputGroup>
             </div>
-            <CButton
-              color="primary"
-              style={{ margin: `${spacing[8]} 0` }}
-              onClick={() => navigate('/dashboard/forms')}
-            >
-              Tambah Data
-            </CButton>
+            <div className="d-flex justify-content-between align-items-center">
+              <CButton
+                color="primary"
+                style={{ margin: `${spacing[8]} 0` }}
+                onClick={() => navigate('/dashboard/forms')}
+              >
+                Tambah Data
+              </CButton>
+              <div>
+                <DatePicker
+                  selected={filter.filterDate}
+                  className="datepicker"
+                  customInput={<CustomDatePickerButton />}
+                  showMonthYearPicker
+                  onChange={(date) =>
+                    setFilter((currentFilter) => ({ ...currentFilter, filterDate: date }))
+                  }
+                />
+              </div>
+            </div>
           </div>
         </CCardHeader>
         <CCardBody>
@@ -162,9 +195,24 @@ const Dashboard = (props) => {
               <CTableRow>
                 <CTableHeaderCell scope="col">Nama Barang</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Harga</CTableHeaderCell>
-                <CTableHeaderCell scope="col">In</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Out</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Sisa Stok</CTableHeaderCell>
+                <CTableHeaderCell scope="col" width={150}>
+                  Stok Masuk {moment(filter.filterDate).format('MMMM YYYY')}
+                </CTableHeaderCell>
+                <CTableHeaderCell scope="col" width={150}>
+                  Stok Keluar {moment(filter.filterDate).format('MMMM YYYY')}
+                </CTableHeaderCell>
+                <CTableHeaderCell scope="col" width={150}>
+                  Sisa Stok {moment(filter.filterDate).format('MMMM YYYY')}
+                </CTableHeaderCell>
+                <CTableHeaderCell scope="col" width={150}>
+                  Total Stok Masuk
+                </CTableHeaderCell>
+                <CTableHeaderCell scope="col" width={150}>
+                  Total Stok Keluar
+                </CTableHeaderCell>
+                <CTableHeaderCell scope="col" width={150}>
+                  Total Sisa Stok
+                </CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -186,6 +234,27 @@ const Dashboard = (props) => {
                       style={{ cursor: 'pointer' }}
                     >
                       {formatRupiah(d?.price || 0)}
+                    </CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {d?.inStockCurrentMonth || 0}
+                    </CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {d?.outStockCurrentMonth || 0}
+                    </CTableDataCell>
+                    <CTableDataCell
+                      align="middle"
+                      onClick={() => openModalDetail(d)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {d?.stockCurrentMonth || 0}
                     </CTableDataCell>
                     <CTableDataCell
                       align="middle"

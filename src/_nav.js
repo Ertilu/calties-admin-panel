@@ -16,6 +16,7 @@ import {
   cilBell,
 } from '@coreui/icons'
 
+// eslint-disable-next-line no-unused-vars
 const _nav = [
   {
     component: CNavItem,

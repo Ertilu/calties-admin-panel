@@ -19,7 +19,7 @@ function InStockTable({ data = [] }) {
           <CTableRow>
             <CTableHeaderCell scope="col">Nama Barang</CTableHeaderCell>
             <CTableHeaderCell scope="col">Harga</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Vendor</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Supplier</CTableHeaderCell>
             <CTableHeaderCell scope="col">Stok Masuk</CTableHeaderCell>
             <CTableHeaderCell scope="col">Tanggal Masuk</CTableHeaderCell>
           </CTableRow>

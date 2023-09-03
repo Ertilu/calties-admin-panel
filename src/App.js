@@ -2,6 +2,7 @@ import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import './scss/style.scss'
 import TokenService from './services/token.service'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const loading = (
   <div className="pt-3 text-center">
